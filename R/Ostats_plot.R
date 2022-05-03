@@ -15,6 +15,7 @@
 #'@param colorvalues Vector of color values for the density polygons.
 #' Defaults to a viridis palette if none provided.
 #'@param alpha defines the transparency level for the density polygons. Default is 0.5.
+#'@param bw chose the bandwith selector. Default is "nrd0". Accept fixed numeric values. See bw.nrd for possible selectors.
 #'@param adjust the bandwidth adjustment of the density polygons. Default is 2.
 #' See \code{\link[stats]{density}}.
 #'@param limits_x Vector of length 2, with multiplicative factor to apply to the minimum
@@ -71,6 +72,7 @@ Ostats_plot<-function(plots,
                       scale = "fixed",
                       colorvalues = NULL,
                       alpha = 0.5,
+                      bw="nrd0",
                       adjust = 2,
                       limits_x = c(0.5, 1.5),
                       legend = FALSE,
@@ -137,7 +139,7 @@ Ostats_plot<-function(plots,
     x_limits <- limits_x * range(traits[, i], na.rm = TRUE)
 
     ggplot_dist <- ggplot2::ggplot(plot_dat) +
-      ggplot2::stat_density(adjust = adjust, ggplot2::aes_string(x = dimnames(traits)[[2]][i], group = 'sp', fill = 'sp'), alpha = alpha, geom='polygon', position = 'identity') +
+      ggplot2::stat_density(bw=bw, adjust = adjust, ggplot2::aes_string(x = dimnames(traits)[[2]][i], group = 'sp', fill = 'sp'), alpha = alpha, geom='polygon', position = 'identity') +
       ggplot2::facet_wrap(~ plots, ncol = n_col, scales = scale) +
       ggplot2::scale_fill_manual(values = colorvalues) +
       ggplot2::scale_x_continuous(name = name_x, limits = x_limits) +
